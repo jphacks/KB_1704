@@ -1,0 +1,107 @@
+import boto3
+import json
+
+from boto3.dynamodb.conditions import Key, Attr
+from urllib import parse
+
+UNORGANIZED_NAME = "_UNORGANIZED"
+
+dynamodb = boto3.resource('dynamodb')
+
+db_table = dynamodb.Table('ginnan-icho-Item')
+
+
+from misc import build_item_dict
+
+def get_items(event,context):
+    """
+    ownerがユーザーであるItemを全て取得してjsonでかえす
+    """
+    items = db_table.query(KeyConditionExpression=Key('owner').eq(event['context']['username'])
+            )['Items']
+
+    res = build_item_dict(items)
+    for group_name,l in res.items():
+        if not l:
+            db_query.delete_item(
+                    Key = {
+                        "owner": event['context']['username'],
+                        'group__description':group_name + "__",
+                        }
+                    )
+    return json.dumps(res)
+
+
+def add_item(event,context):
+    """
+    未整理のメモを追加
+    """
+    item = {
+                "owner": event['context']['username'],
+                "group__description" : UNORGANIZED_NAME + "__" + event['body-json'].get('description',''),
+                "group_name":UNORGANIZED_NAME,
+                }
+    if event['body-json'].get('description') is not None:
+        item['description'] = event['body-json']['description']
+    db_table.put_item(
+            Item = item
+            )
+    return json.dumps({})
+
+
+def get_group_items(event,context):
+    """
+    ownerがユーザーであるあるGroupのItemを全て取得してjsonでかえす
+    """
+    items = db_table.query(KeyConditionExpression=Key('owner').eq(event['context']['username']) \
+            & Key('group__description').begins_with(parse.unquote(event['params']['path']['group_name']))
+            )['Items']
+    return json.dumps(build_item_dict(items))
+
+
+def add_item_to_group(event,context):
+    """
+    メモをGroupに分ける
+    """
+    group_name = parse.unquote(event['params']['path']['group_name'])
+    item = {
+                "owner": event['context']['username'],
+                "group__description" : group_name + "__" + event['body-json'].get('description',''),
+                "group_name":group_name,
+                }
+    if event['body-json'].get('description') is not None:
+        item['description'] = event['body-json']['description']
+
+    db_table.put_item(
+            Item = item
+            )
+
+    if event['body-json'].get('old_group_name') and event['body-json'].get('old_description'):
+        old_group_name = event['body-json']['old_group_name']
+        old_description = event['body-json']['old_description']
+
+        db_table.delete_item(
+                Key = {
+                    'owner': event['context']['username'],
+                    'group__description': old_group_name + "__" + old_description
+                    })
+
+    return json.dumps({})
+
+
+def delete_item(event,context):
+    """
+    メモを削除
+    """
+
+    description = event['body-json'].get('description','')
+    group_name = event['body-json']['group_name']
+
+    db_table.delete_item(
+            Key = {
+                'owner': event['context']['username'],
+                'group__description': group_name + "__" + description
+                })
+
+    return json.dumps(event['body-json']['description'])
+
