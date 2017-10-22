@@ -51,7 +51,8 @@
   - url(モジュール)
   - fs(モジュール)
   - XMLHttpRequest(モジュー)
-
+- iOS アプリサンプル
+ - [github](https://github.com/awslabs/aws-sdk-ios-samples/tree/master/CognitoYourUserPools-Sample/Swift)
 #### デバイス
 - iPhone 6
 
