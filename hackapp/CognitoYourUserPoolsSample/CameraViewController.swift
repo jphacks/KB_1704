@@ -14,16 +14,22 @@ import Foundation
 class CameraViewController : UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 
     var parameters : String = ""
+    var faceimage : UIImage = #imageLiteral(resourceName: "icon-camera.png")
+    var emotion : String = ""
+    var datatext : String = ""
     
     @IBOutlet weak var idenbutton: UIButton!
     @IBOutlet var cameraView : UIImageView!
     @IBOutlet var label : UILabel!
+    @IBOutlet weak var emotionlabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         idenbutton.isEnabled = false
         
         label.text = "Tap the [Start] to take a picture"
+        emotionlabel.text = self.emotion
+        
     
     }
     
@@ -73,16 +79,12 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
     // 写真を保存
     @IBAction func savePicture(_ sender : AnyObject) {
         var image:UIImage! = cameraView.image
-        
+        self.faceimage = image
         print(image.size.width)
-        //image = image.resize(size: CGSize(width: 2000, height: 2000))
-        
-        
-        //print(image.size.width)
         
         if image != nil {
-            //UIImageWriteToSavedPhotosAlbum(image, self, #selector(CameraViewController.image(_:didFinishSavingWithError:contextInfo:)),nil)
             
+            self.label.text = "Wait..."
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(CameraViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
             
             // Amazon Cognito 認証情報プロバイダーを初期化します
@@ -115,25 +117,13 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
                 return nil
             }
             
-            //image transfer
-            //let docDir = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-            //let text = "Upload File."
-            
-            
-            
-            //let fileName = cameraView.image
-            //let filePath = "\(docDir)/\(fileName)"
-            //try! text.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
-            //let transferManager = AWSS3TransferManager.default()
-            
-            //let uploadRequest = AWSS3TransferManagerUploadRequest()!
             let time:Int = Int(NSDate().timeIntervalSince1970)
             let myImageName:String = String(time)
             print(myImageName)
             let imagePath = getDocumentsURL().appendingPathComponent(myImageName + ".jpg")
             
             //let path = URL(fileURLWithPath: imagePath)
-            if let jpegData = UIImageJPEGRepresentation(cameraView.image!, 0.8) {
+            if let jpegData = UIImageJPEGRepresentation(/*cameraView.image!*/image, 0.8) {
                 try! jpegData.write(to: imagePath!, options: .atomic)
             }
             
@@ -154,40 +144,12 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
             }
             
             let request: Request = Request()
-            let jsonurlstr : String = "http://13.112.30.85/personalId?srcImage="  + myImageName + ".jpg"
+            let jsonurlstr : String = "http://13.112.30.85/emotion?srcImage="  + myImageName + ".jpg"
             
             let url: URL = Foundation.URL(string: jsonurlstr)! //URL(string : jsonurlstr)!
-            
-            //let body: NSMutableDictionary = NSMutableDictionary()
-            //body.setValue("srcImage", forKey: myImageName + ".jpg")
+
             
             request.get(url: url, completionHandler: { data, response, error in
-                    /*if let res = response {
-                        
-                        //let json = JSON(data: dataFromNetworking)
-                        print(res.dictionaryWithValues(forKeys: ["HP"]))
-                        print(type(of:data))
-                        //let dt = data(using: .utf8)!
-                        do {
-                            //let json = "{\"fuga\":\"aiueo\",\"foo\":999,\"user\":{\"name\":\"tenten0213\",\"age\":30}}"
-                            let personInfo = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] // json->dictionary
-                            print(personInfo?["HP"])
-                        } catch { }
-                        
-                        
-                    }
-                    if let dat = data {
-                        //print(dat)
-                    }
-                    if let err = error {
-                        print(err)
-                    }
-                 })
-                 
-                 }
-                 else{
-                 label.text = "image Failed !"
-                 }*/
                 
                 guard let data = data else {
                     print("request failed \(error)")
@@ -202,8 +164,19 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
                     print("parsing error: \(parseError)")
                     let responseString = String(data: data, encoding: .utf8)
                     print("raw response: \(responseString)")
-                    self.parameters = responseString!
-                    self.idenbutton.isEnabled = true
+                    
+                    let split = responseString!.components(separatedBy: "status")
+                    let split2 = split[1].components(separatedBy: ":")
+                    //let split3 = split2[2].components(separatedBy: "}")
+                    print(split2[1])
+                    
+                    if split2[1] == "success}" {
+                        self.parameters = self.datatext
+                        self.idenbutton.isEnabled = true
+                        self.label.text = "Success! Identify!!!"
+                    } else {
+                        self.label.text = "Failed..."
+                    }
                 }
             
             })    // error code
@@ -220,6 +193,8 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
         if segue.identifier == "toSecondViewController" {
             let secondViewController = segue.destination as! SecondViewController
             secondViewController.parameters = self.parameters
+            secondViewController.faceimage = self.faceimage
+            
         }
     }
     
@@ -236,17 +211,6 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
     
     }
     
-    /*func saveImage (image: UIImage, path: String ) -> Bool{
-        //pngで保存する場合
-        let pngImageData = UIImagePNGRepresentation(image)
-        // jpgで保存する場合
-        let jpgImageData = UIImageJPEGRepresentation(image, 1.0)
-        let url = URL(path: String)
-        let result = pngImageData!.write(url: URL(path: String), options: true)
-    
-        return result
-    }*/
-    
     // 書き込み完了結果の受け取り
     @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError!, contextInfo: UnsafeMutableRawPointer) {
     
@@ -257,26 +221,6 @@ class CameraViewController : UIViewController, UIImagePickerControllerDelegate, 
         else{
             label.text = "Save Succeeded"
         }
-    }
-    
-    // アルバムを表示
-    @IBAction func showAlbum(_ sender : AnyObject) {
-        let sourceType:UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.photoLibrary
-    
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
-            // インスタンスの作成
-            let cameraPicker = UIImagePickerController()
-            cameraPicker.sourceType = sourceType
-            cameraPicker.delegate = self
-            self.present(cameraPicker, animated: true, completion: nil)
-    
-            label.text = "Tap the [Start] to save a picture"
-        }
-        else{
-            label.text = "error"
-    
-        }
-    
     }
     
     override func didReceiveMemoryWarning() {
