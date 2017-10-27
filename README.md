@@ -56,7 +56,7 @@
 #### デバイス
 - iPhone 6
 ## システムモデル
-[![Systemmodel](https://github.com/jphacks/KB_1704/blob/master/system.jpeg)]
+[![Systemmodel](https://github.com/jphacks/KB_1704/blob/master/system.png)]
 
 
 ### 研究内容・事前開発プロダクト（任意）
