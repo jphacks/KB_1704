@@ -21,13 +21,12 @@
 		17FC2F9F1E259F3200174015 /* ConfirmSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */; };
 		17FC2FA11E25A25900174015 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2FA01E25A25900174015 /* ForgotPasswordViewController.swift */; };
 		17FC2FA31E25A5D000174015 /* ConfirmForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2FA21E25A5D000174015 /* ConfirmForgotPasswordViewController.swift */; };
-		17FC2FA51E25A77600174015 /* UserDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */; };
-		17FC2FA71E25A9A200174015 /* DevicesDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */; };
 		3CAA66121F98A61800BF69F4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CAA66111F98A61800BF69F4 /* ListViewController.swift */; };
 		3CC75B521F9AD9BA001B8CB7 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC75B511F9AD9BA001B8CB7 /* CameraViewController.swift */; };
 		3CD382F91F9BD59800910693 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD382F81F9BD59800910693 /* MenuViewController.swift */; };
 		3CD382FB1F9BE89900910693 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD382FA1F9BE89900910693 /* Request.swift */; };
 		3CD382FD1F9C4F1300910693 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD382FC1F9C4F1300910693 /* SecondViewController.swift */; };
+		3CD382FF1F9C659B00910693 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD382FE1F9C659B00910693 /* FirstViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,8 +45,6 @@
 		17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSignUpViewController.swift; sourceTree = "<group>"; };
 		17FC2FA01E25A25900174015 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		17FC2FA21E25A5D000174015 /* ConfirmForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmForgotPasswordViewController.swift; sourceTree = "<group>"; };
-		17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTableViewController.swift; sourceTree = "<group>"; };
-		17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesDetailTableViewController.swift; sourceTree = "<group>"; };
 		2D8C9B52DE415302BA7B152A /* Pods-CognitoYourUserPoolsSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CognitoYourUserPoolsSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample.release.xcconfig"; sourceTree = "<group>"; };
 		3CAA66111F98A61800BF69F4 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		3CC75B511F9AD9BA001B8CB7 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +52,7 @@
 		3CD382F81F9BD59800910693 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		3CD382FA1F9BE89900910693 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		3CD382FC1F9C4F1300910693 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		3CD382FE1F9C659B00910693 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		AB8F26771F0FF8105FC402DD /* Pods_CognitoYourUserPoolsSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CognitoYourUserPoolsSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBEB9BB4F88788184F7DD583 /* Pods-CognitoYourUserPoolsSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CognitoYourUserPoolsSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,9 +108,8 @@
 				17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */,
 				17FC2FA01E25A25900174015 /* ForgotPasswordViewController.swift */,
 				17FC2FA21E25A5D000174015 /* ConfirmForgotPasswordViewController.swift */,
-				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
-				17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */,
 				3CC75B511F9AD9BA001B8CB7 /* CameraViewController.swift */,
+				3CD382FE1F9C659B00910693 /* FirstViewController.swift */,
 				3CD382FC1F9C4F1300910693 /* SecondViewController.swift */,
 			);
 			path = CognitoYourUserPoolsSample;
@@ -292,10 +289,9 @@
 				3CD382F91F9BD59800910693 /* MenuViewController.swift in Sources */,
 				17FC2F991E25940900174015 /* SignInViewController.swift in Sources */,
 				17FC2F971E25928900174015 /* MFAViewController.swift in Sources */,
-				17FC2FA71E25A9A200174015 /* DevicesDetailTableViewController.swift in Sources */,
+				3CD382FF1F9C659B00910693 /* FirstViewController.swift in Sources */,
 				3CD382FB1F9BE89900910693 /* Request.swift in Sources */,
 				17FC2F801E258FC500174015 /* AppDelegate.swift in Sources */,
-				17FC2FA51E25A77600174015 /* UserDetailTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

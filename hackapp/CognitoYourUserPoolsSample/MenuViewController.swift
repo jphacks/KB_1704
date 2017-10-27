@@ -27,7 +27,7 @@ class MenuViewController: UIViewController {
         if (self.user == nil) {
             self.user = self.pool?.currentUser()
         }
-        
+        self.refresh()
 
         // Do any additional setup after loading the view.
     }
@@ -64,10 +64,22 @@ class MenuViewController: UIViewController {
     
     @IBAction func signOut(_ sender: AnyObject) {
         self.user?.signOut()
-        //self.title = nil
-        //self.response = nil
+        self.title = nil
+        self.response = nil
         //self.tableView.reloadData()
-        //self.refresh()
+        self.refresh()
+    }
+    
+    func refresh() {
+        self.user?.getDetails().continueOnSuccessWith { (task) -> AnyObject? in
+            DispatchQueue.main.async(execute: {
+                //self.response = task.result
+                self.title = self.user?.username
+                //self.menutable.reloadData()
+                //self.tableView.reloadData()
+            })
+            return nil
+        }
     }
 
 }
